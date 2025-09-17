@@ -1,6 +1,6 @@
 # Apress Source Code
 
-This repository accompanies [*Crafting Great APIs with Domain-Driven Design*](https://www.link.springer.com/book/10.1007/979-8-8688-1457-0) by Fabrizio Lazzaretti (Apress, 2025).
+This repository accompanies [*Crafting Great APIs with Domain-Driven Design*](https://www.link.springer.com/book/10.1007/979-8-8688-1457-0) by Annegret Junker and Fabrizio Lazzaretti (Apress, 2025).
 
 [comment]: #cover
 ![Cover image](979-8-8688-1456-3.jpg)
