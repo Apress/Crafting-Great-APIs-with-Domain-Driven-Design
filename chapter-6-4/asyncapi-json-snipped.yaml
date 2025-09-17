@@ -1,0 +1,34 @@
+components:
+  messages:
+    BookPurchasedEvent:
+      contentType: application/json
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        $ref: '#/components/schemas/BookPurchased'
+      bindings:
+        kafka:
+          bindingVersion: '0.5.0'
+          key:
+            type: string
+            format: uuid
+  schemas:
+    MessageHeader:
+      type: object
+      properties:
+        orderDate:
+          type: string
+          format: date-time
+      required:
+        - orderDate
+    BookPurchased:
+      $id: https://example.com/book
+      $schema: https://json-schema.org/draft/2020-12/schema
+      title: Book
+      description: A schema representing a book and its metadata for the library for, e.g., search results
+      type: object
+      properties:
+        isbn13:
+          type: string
+          pattern: ^[0-9]{13}$
+          description: The 13-digit ISBN

@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=./book.schema.json
+isbn13: '9783161484100'
+title: The best book
+coverThumbnailWebP: "aW1hZ2UgaW4gYmFzZTY0"
+authors:
+- name: author 1
+  portraitThumbnailWebP: "aW1hZ2UgaW4gYmFzZTY0"
+- name: author 2
+numberOfTextPosition: 0
+category: NON_FICTION
+tags:
+- DDD
+- Modeling
+rating: 4.5
+hasValidLicense: true
+publishingDate: '2020-08-01'

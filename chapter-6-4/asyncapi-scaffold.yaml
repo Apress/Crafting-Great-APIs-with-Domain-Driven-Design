@@ -1,0 +1,11 @@
+asyncapi: 3.0.0
+info:
+  title: AsyncAPI Scaffold
+  version: 1.0.0
+servers: {}
+channels: {}
+operations: {}
+components: # these components can be refed by a JSON Reference (e.g., `$ref: '#/components/messages/BookPurchasedEvent')
+  schemas: {} # contains the message schemas in JSON Schema (Avro or ProtoBuf need to be declared directly in the message in v3 due to some limitations)
+  messages: {} # contains messages that can be referenced in multiple channels
+  securitySchemes: {} # contains the security schema references, e.g., API key, OAuth2 flows

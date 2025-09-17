@@ -1,0 +1,286 @@
+openapi: 3.1.0
+info:
+  title: Catalog Management API
+  description: |
+    API for managing catalogs and catalog entries in a library system.
+    Supports creation, search, and management of catalog entries with associated metadata.
+  contact:
+    email: api@library.example.com
+    name: Library API Team
+    url: https://github.com/Grinseteddy
+  version: 1.0.0
+  x-api-id: 8f7e4c2d-9b3a-4f1d-8e5a-6c2d1b3a4f5d
+  x-audience: external-public
+
+servers:
+  - url: 'https://api.library.example.com/catalog-management'
+    description: Production server
+
+security:
+  - openIdConnect:
+      - catalog:read
+      - catalog:write
+      - catalog:admin
+
+tags:
+  - name: Catalogs
+    description: Operations for managing catalogs
+  - name: CatalogEntries
+    description: Operations for managing catalog entries
+  - name: Search
+    description: Operations for searching catalog entries
+
+paths:
+  /catalogs:
+    get:
+      description: Retrieve all catalogs
+      operationId: getAllCatalogs
+      tags:
+        - Catalogs
+      security:
+        - openIdConnect:
+            - catalog:read
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      responses:
+        '200':
+          description: List of catalogs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Catalog'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /catalogs/{catalogId}/entries:
+    post:
+      description: Create a new catalog entry
+      operationId: createCatalogEntry
+      tags:
+        - CatalogEntries
+      security:
+        - openIdConnect:
+            - catalog:write
+      parameters:
+        - name: catalogId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CatalogEntryCreate'
+      responses:
+        '201':
+          description: Catalog entry created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogEntry'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+  /search:
+    post:
+      description: Search for catalog entries
+      operationId: searchCatalogEntries
+      tags:
+        - Search
+      security:
+        - openIdConnect:
+            - catalog:read
+      parameters:
+        - $ref: '#/components/parameters/VersionParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchCriteria'
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CatalogEntry'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/ServiceNotAvailableResponse'
+
+components:
+  schemas:
+    Catalog:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+
+    CatalogEntry:
+      type: object
+      required:
+        - id
+        - title
+        - authors
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          $ref: '#/components/schemas/Title'
+        abstract:
+          $ref: '#/components/schemas/Abstract'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+          minItems: 1
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+
+    CatalogEntryCreate:
+      type: object
+      required:
+        - title
+        - authors
+      properties:
+        title:
+          $ref: '#/components/schemas/Title'
+        abstract:
+          $ref: '#/components/schemas/Abstract'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+          minItems: 1
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+
+    Author:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        biography:
+          type: string
+          maxLength: 1000
+
+    Title:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          minLength: 1
+          maxLength: 200
+        subtitle:
+          type: string
+          maxLength: 500
+
+    Abstract:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        language:
+          type: string
+          pattern: '^[a-z]{2}-[A-Z]{2}$'
+          example: 'en-US'
+
+    Tag:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 50
+        category:
+          type: string
+          enum: ['genre', 'topic', 'age-group', 'other']
+
+    SearchCriteria:
+      type: object
+      properties:
+        query:
+          type: string
+          minLength: 2
+          maxLength: 100
+        filters:
+          type: object
+          properties:
+            authors:
+              type: array
+              items:
+                type: string
+                format: uuid
+            tags:
+              type: array
+              items:
+                type: string
+            dateRange:
+              type: object
+              properties:
+                from:
+                  type: string
+                  format: date
+                to:
+                  type: string
+                  format: date
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: OpenID Connect authentication
+      openIdConnectUrl: "https://auth.library.example.com/.well-known/openid-configuration"

@@ -1,0 +1,281 @@
+openapi: 3.1.0
+info:
+  title: Reading List API
+  description: API for managing reading lists and their entries
+  contact:
+    name: Library API Team
+    url: https://library.example.com
+    email: api@library.example.com
+  version: 1.0.0
+servers:
+  - url: 'https://api.library.example.com/v1'
+security:
+  - openIdConnect:
+      - reading_list_read
+      - reading_list_write
+      - reading_list_admin
+tags:
+  - name: Reading Lists
+    description: Operations for managing reading lists
+  - name: Reading List Entries
+    description: Operations for managing entries in reading lists
+  - name: Tags
+    description: Operations for managing tags associated with reading lists
+paths:
+  /reading-lists:
+    get:
+      description: Retrieve all reading lists for the authenticated user
+      operationId: getReadingLists
+      tags:
+        - Reading Lists
+      security:
+        - openIdConnect:
+            - reading_list_read
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReadingList'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+    post:
+      description: Create a new reading list
+      operationId: createReadingList
+      tags:
+        - Reading Lists
+      security:
+        - openIdConnect:
+            - reading_list_write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadingList'
+      responses:
+        201:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+
+  /reading-lists/{readingListId}:
+    get:
+      description: Retrieve a specific reading list
+      operationId: getReadingList
+      tags:
+        - Reading Lists
+      security:
+        - openIdConnect:
+            - reading_list_read
+      parameters:
+        - $ref: '#/components/parameters/ReadingListIdParameter'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadingList'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+  /reading-lists/{readingListId}/entries:
+    post:
+      description: Add a new entry to a reading list
+      operationId: addReadingListEntry
+      tags:
+        - Reading List Entries
+      security:
+        - openIdConnect:
+            - reading_list_write
+      parameters:
+        - $ref: '#/components/parameters/ReadingListIdParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadingListEntry'
+      responses:
+        201:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+  /reading-lists/{readingListId}/entries/{entryId}:
+    put:
+      description: Update the status of a reading list entry
+      operationId: updateReadingListEntryStatus
+      tags:
+        - Reading List Entries
+      security:
+        - openIdConnect:
+            - reading_list_write
+      parameters:
+        - $ref: '#/components/parameters/ReadingListIdParameter'
+        - $ref: '#/components/parameters/EntryIdParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadingListEntryStatus'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadingListEntry'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+  /reading-lists/{readingListId}/tags:
+    post:
+      description: Add tags to a reading list
+      operationId: addTagsToReadingList
+      tags:
+        - Tags
+      security:
+        - openIdConnect:
+            - reading_list_write
+      parameters:
+        - $ref: '#/components/parameters/ReadingListIdParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tag'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadingList'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+components:
+  parameters:
+    ReadingListIdParameter:
+      name: readingListId
+      description: Reading list identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+    EntryIdParameter:
+      name: entryId
+      description: Reading list entry identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+
+  responses:
+    BadRequestResponse:
+      $ref: '#/components/responses/BadRequestResponse'
+    ForbiddenResponse:
+      $ref: '#/components/responses/ForbiddenResponse'
+    LinkToResourceResponse:
+      $ref: '#/components/responses/LinkToResourceResponse'
+    NotFoundResponse:
+      $ref: '#/components/responses/NotFoundResponse'
+    SuccessfulOperationResponse:
+      $ref: '#/components/responses/SuccessfulOperationResponse'
+
+  schemas:
+    ReadingList:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadingListEntry'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+
+    ReadingListEntry:
+      type: object
+      required:
+        - id
+        - title
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        status:
+          $ref: '#/components/schemas/ReadingListEntryStatus'
+
+    ReadingListEntryStatus:
+      type: string
+      enum:
+        - to_be_read
+        - reading
+        - finished
+
+    Tag:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+
+    Link:
+      $ref: '#/components/schemas/Link'
+    Message:
+      $ref: '#/components/schemas/Message'
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: OpenID Connect authentication for the Reading List API
+      openIdConnectUrl: "https://auth.library.example.com/.well-known/openid-configuration"

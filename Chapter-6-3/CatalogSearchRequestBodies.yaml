@@ -1,0 +1,27 @@
+openapi: 3.1.
+
+components:
+  requestBodies:
+    AbstractRequest:
+      description: Abstract to be updated in a book
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Abstract'
+
+    BookToBeCreatedRequest:
+      description: Book to be created in the catalog
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookToBeCreatedUpdated'
+
+    BookToBeUpdatedRequest:
+      description: Book to be updated in the catalog
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookToBeCreatedUpdated'
+
+
+

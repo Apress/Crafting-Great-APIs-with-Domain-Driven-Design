@@ -1,0 +1,242 @@
+openapi: 3.1.0
+info:
+  title: Lending Service API
+  description: An API to manage reading lists, reading list entries, statuses, and reading behaviors.
+  contact:
+    name: whoever
+    url: https://sample.org/sample
+    email: who.ever@sample.org
+  version: 1.0.0
+servers:
+  - url: 'https://{server-to-the-api}.myorganization.com/lending'
+security:
+  - openIdConnect:
+      - resource_read
+      - resource_write
+      - resource_admin
+tags:
+  - name: Reading List
+    description: API for managing reading lists
+  - name: Reading List Entry
+    description: API for managing individual entries in a reading list
+  - name: Tags
+    description: API for managing tags associated with reading list entries
+  - name: Status
+    description: API for managing the status of reading list entries
+  - name: Reading Behavior
+    description: API for tracking and defining reading behavior
+
+paths:
+  /reading-lists:
+    get:
+      description: Get all reading lists for a user
+      operationId: getAllReadingLists
+      tags:
+        - Reading List
+      security:
+        - openIdConnect:
+            - resource_read
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReadingList'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+    post:
+      description: Create a new reading list for a user
+      operationId: createReadingList
+      tags:
+        - Reading List
+      security:
+        - openIdConnect:
+            - resource_write
+      requestBody:
+        description: Details of the reading list to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadingList'
+      responses:
+        201:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+
+  /reading-lists/{listId}:
+    get:
+      description: Get a specific reading list by its ID
+      operationId: getReadingListById
+      tags:
+        - Reading List
+      security:
+        - openIdConnect:
+            - resource_read
+      parameters:
+        - name: listId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadingList'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+
+  /reading-lists/{listId}/entries:
+    get:
+      description: Get all reading list entries for a specific reading list
+      operationId: getAllReadingListEntries
+      tags:
+        - Reading List Entry
+      security:
+        - openIdConnect:
+            - resource_read
+      parameters:
+        - name: listId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReadingListEntry'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+        404:
+          $ref: '#/components/responses/NotFoundResponse'
+    post:
+      description: Add a new entry to the reading list
+      operationId: addReadingListEntry
+      tags:
+        - Reading List Entry
+      security:
+        - openIdConnect:
+            - resource_write
+      requestBody:
+        description: Details of the reading list entry to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadingListEntry'
+      responses:
+        201:
+          $ref: '#/components/responses/LinkToResourceResponse'
+        400:
+          $ref: '#/components/responses/BadRequestResponse'
+        403:
+          $ref: '#/components/responses/ForbiddenResponse'
+
+components:
+  schemas:
+    ReadingList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadingListEntry'
+
+    ReadingListEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        status:
+          $ref: '#/components/schemas/Status'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+
+    Status:
+      type: string
+      enum:
+        - To be read
+        - Reading
+        - Finished
+
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+
+    ReadingBehavior:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        behavior:
+          type: string
+
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+
+    ForbiddenResponse:
+      description: Forbidden
+
+    LinkToResourceResponse:
+      description: Successful operation - Resource created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Link'
+
+    NotFoundResponse:
+      description: Not found
+
+    SuccessfulOperationResponse:
+      description: Successful operation
+
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      description: Security scheme for Lending service
+      openIdConnectUrl: "https://idp.online-library.org/configuration"

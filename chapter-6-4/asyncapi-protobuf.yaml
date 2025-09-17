@@ -1,0 +1,115 @@
+asyncapi: 3.0.0
+info:
+  title: Book Purchesed API
+  version: 1.0.0
+  description: The API notifies when a book get purchesed.
+servers:
+  event-broker-library:
+    host: broker.online-library.org:8092
+    protocol: kafka
+    description: Event broker of the online library
+    bindings:
+      kafka:
+        schemaRegistryUrl: 'https://online-library-schema-registry.com'
+        schemaRegistryVendor: 'confluent'
+        bindingVersion: '0.5.0'
+channels:
+  BookPurchasedEventProtobufChannel:
+    description: Channel where messages are stored when a book was purchased in Protobuf
+    address: book-purchased-protobuf
+    messages:
+      BookPurchasedEventProtobuf:
+        $ref: '#/components/messages/BookPurchasedEventProtobuf'
+    bindings:
+      kafka:
+        topic: 'book-purchased-protobuf'
+        bindingVersion: '0.5.0'
+operations:
+  BookPurchasedEventReceive:
+    action: "receive"
+    channel:
+      $ref: "#/channels/BookPurchasedEventProtobufChannel"
+    bindings:
+      kafka:
+        bindingVersion: '0.5.0'
+        groupId:
+          type: string
+          pattern: ^cg-book-purchased-protobuf.*$
+components:
+  messages:
+    BookPurchasedEventProtobuf:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        schemaFormat: application/vnd.google.protobuf;version=3
+        schema: |
+          syntax = "proto3";
+
+          package Example.Library;
+
+          // Book represents a book and its metadata for the library, e.g., for search results
+          message BookPurchasedEventProtobuf {
+            // The 13-digit ISBN
+            string isbn13 = 1;
+
+            // The title of the book (1-200 characters)
+            string title = 2;
+
+            // WebP image of the book cover thumbnail
+            optional bytes cover_thumbnail_webp = 3;
+
+            // List of authors of the book (at least one author)
+            repeated Author authors = 4;
+
+            // The number of text positions in the book (non-negative integer)
+            uint32 number_of_text_position = 5;
+
+            // The main category of the book
+            Category category = 6;
+
+            // List of tags associated with the book (up to 20 unique tags, 1-50 characters each)
+            repeated string tags = 7;
+
+            // The average rating of the book (0 to 5 stars, with one decimal place)
+            optional float rating = 8;
+
+            // Indicates whether the library has a valid license for the book at the moment
+            bool has_valid_license = 9;
+
+            // The date when the book was published, in ISO 8601 format (YYYY-MM-DD)
+            // This format allows for representation of dates before the Unix epoch
+            // Examples: "2000-01-01", "1850-12-25", "0001-01-01"
+            string publishing_date = 10;
+
+            // Author represents an author of a book
+            message Author {
+              // The full name of the author with titles (1-100 characters)
+              // Examples: "Eric Evans", "Dr. John Smith"
+              string name = 1;
+
+              // WebP image of the author's portrait thumbnail
+              optional bytes portrait_thumbnail_webp = 2;
+            }
+
+            // Category represents the main category of a book
+            enum Category {
+              CATEGORY_NON_FICTION = 0;
+              CATEGORY_FICTION = 1;
+            }
+          }
+
+      bindings:
+        kafka:
+          bindingVersion: '0.5.0'
+          key:
+            type: string
+            format: uuid
+  schemas:
+    MessageHeader:
+      type: object
+      properties:
+        orderDate:
+          type: string
+          format: date-time
+      required:
+        - orderDate

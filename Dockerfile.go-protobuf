@@ -1,0 +1,4 @@
+FROM golang:1.23-bookworm
+
+RUN apt update && apt install -y protobuf-compiler && rm -rf /var/lib/apt/lists/*
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest

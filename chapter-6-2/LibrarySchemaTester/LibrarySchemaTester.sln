@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Library.BookSchemaTester", "Example.Library.BookSchemaTester\Example.Library.BookSchemaTester.csproj", "{08547C97-8DE3-4C88-B493-B3E3E4175003}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Library.Book.Dto.Json", "Example.Library.Book.Dto.Json\Example.Library.Book.Dto.Json.csproj", "{9EFB19A7-61CA-40DD-8D0A-738A0D29DEA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Library.Book.Dto.Proto", "Example.Library.Book.Dto.Proto\Example.Library.Book.Dto.Proto.csproj", "{AA5E0D19-C4BF-4094-9E0B-49937B2F5C9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Library.Book.Dto.Avro", "Example.Library.Book.Dto.Avro\Example.Library.Book.Dto.Avro.csproj", "{8F5CC0CE-0A07-48FB-8E96-93D98FC6EB02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Library.BookSchemaTester.Tests", "Example.Library.BookSchemaTester.Tests\Example.Library.BookSchemaTester.Tests.csproj", "{739FFCA1-720F-4F9D-9E0E-8D6C817190FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Library.Book.Dto.Xml", "Example.Library.Book.Dto.Xml\Example.Library.Book.Dto.Xml.csproj", "{80D9953F-3D95-432F-9ABB-108362EDF88A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08547C97-8DE3-4C88-B493-B3E3E4175003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08547C97-8DE3-4C88-B493-B3E3E4175003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08547C97-8DE3-4C88-B493-B3E3E4175003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08547C97-8DE3-4C88-B493-B3E3E4175003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EFB19A7-61CA-40DD-8D0A-738A0D29DEA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EFB19A7-61CA-40DD-8D0A-738A0D29DEA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EFB19A7-61CA-40DD-8D0A-738A0D29DEA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EFB19A7-61CA-40DD-8D0A-738A0D29DEA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA5E0D19-C4BF-4094-9E0B-49937B2F5C9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA5E0D19-C4BF-4094-9E0B-49937B2F5C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA5E0D19-C4BF-4094-9E0B-49937B2F5C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA5E0D19-C4BF-4094-9E0B-49937B2F5C9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F5CC0CE-0A07-48FB-8E96-93D98FC6EB02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F5CC0CE-0A07-48FB-8E96-93D98FC6EB02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F5CC0CE-0A07-48FB-8E96-93D98FC6EB02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F5CC0CE-0A07-48FB-8E96-93D98FC6EB02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{739FFCA1-720F-4F9D-9E0E-8D6C817190FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739FFCA1-720F-4F9D-9E0E-8D6C817190FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739FFCA1-720F-4F9D-9E0E-8D6C817190FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739FFCA1-720F-4F9D-9E0E-8D6C817190FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80D9953F-3D95-432F-9ABB-108362EDF88A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80D9953F-3D95-432F-9ABB-108362EDF88A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80D9953F-3D95-432F-9ABB-108362EDF88A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80D9953F-3D95-432F-9ABB-108362EDF88A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,58 @@
+components:
+  messages:
+    BookPurchasedEventAvro:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        schemaFormat: 'application/vnd.apache.avro+yaml;version=1.9.0'
+        schema:
+          type: record
+          name: Book
+          namespace: com.example
+          doc: A schema representing a book and its metadata for the library for, e.g., search results
+          fields:
+            - name: isbn13
+              type: string
+              doc: The 13-digit ISBN, e.g., 9781234567890
+            - name: title
+              type: string
+              doc: The title of the book
+            - name: coverThumbnailWebP
+              type:
+                - "null"
+                - bytes
+              default: null
+              doc: Base64 encoded WebP image of the book cover thumbnail
+            - name: authors
+              type:
+                type: array
+                items:
+                  type: record
+                  name: Author
+                  fields:
+                    - name: name
+                      type: string
+                      doc: 'The full name of the author with titles, e.g.: "Eric Evans", "Dr. John Smith"'
+                    - name: portraitThumbnailWebP
+                      type:
+                        - "null"
+                        - bytes
+                      default: null
+                      doc: Base64 encoded WebP image of the author's portrait thumbnail
+              doc: List of authors of the book
+            - name: numberOfTextPosition
+              type: long
+              doc: The number of text position in the book
+            - name: category
+              type:
+                type: enum
+                name: Category
+                symbols:
+                  - NON_FICTION
+                  - FICTION
+              doc: The main category of the book
+            - name: tags
+              type:
+                type: array
+                items: string
+              doc: List of tags associated with the book (top 20)

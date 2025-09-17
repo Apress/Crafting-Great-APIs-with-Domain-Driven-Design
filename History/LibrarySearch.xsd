@@ -1,0 +1,80 @@
+<definitions name="LibrarySearch"
+             targetNamespace="http://www.library.org/wsdl/LibrarySearch.wsdl"
+
+             xmlns:tns="http://www.library.org/wsdl/LibrarySearch.wsdl"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://schemas.xmlsoap.org/wsdl/
+http://schemas.xmlsoap.org/wsdl/soap/ "
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/">
+
+    <types>
+        <xsd:complexType name="BookList">
+            <xsd:sequence>
+                <xsd:element
+                        minOccurs="0"
+                        maxOccurs="unbounded"
+                        xsi:type="xsd:Book"/>
+            </xsd:sequence>
+        </xsd:complexType>
+        <xsd:complexType name="Book">
+            <xsd:sequence>
+                <xsd:element
+                        minOccurs="1"
+                        maxOccurs="1"
+                        name="title"
+                        type="xsd:string"/>
+                <xsd:element
+                        minOccurs="0"
+                        maxOccurs="1"
+                        name="author"
+                        type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+    </types>
+
+    <message name="SearchBookRequest">
+        <part name="Search" type="xsd:string"/>
+    </message>
+
+    <message name="SearchBookResponse">
+        <part name="bookList" type="BookList"/>
+    </message>
+
+    <portType name="LibrarySearchPortType">
+        <operation name="searchBook">
+            <input message="tns:SearchBookRequest"/>
+            <output message="tns:SearchBookResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="LibraryBinding" type="tns:Library_LibrarySearchPortType">
+        <soap:binding style="rpc"
+                      transport="http://schemas.xmlsoap.ort/soap/http/"/>
+        <operation name="findBook">
+            <soap:operation soapAction="findBook"/>
+
+            <input>
+                <soap:body
+                        encodingStyle="http://schemas.xmlsoap.org/soap/encoding"
+                        namespace="urn:library::library-search"
+                        use="encoded"/>
+            </input>
+            <output>
+                <soap:body
+                        encodingStyle="http://schemas.xmlsoap.org/soap/encoding"
+                        namespace="urn:library::library-search"
+                        use="encoded"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="LibrarySearchService">
+        <documentation>WSDL for Library Search</documentation>
+        <port binding="tns:LibrarySearch" name="LibrarySearchPort">
+            <soap:address
+                    location="http://library.org/library-search"/>
+        </port>
+    </service>
+
+</definitions>

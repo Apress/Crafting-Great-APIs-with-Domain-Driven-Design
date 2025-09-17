@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Example.Library.Book.Dto.Avro\Example.Library.Book.Dto.Avro.csproj" />
+      <ProjectReference Include="..\Example.Library.Book.Dto.Json\Example.Library.Book.Dto.Json.csproj" />
+      <ProjectReference Include="..\Example.Library.Book.Dto.Proto\Example.Library.Book.Dto.Proto.csproj" />
+      <ProjectReference Include="..\Example.Library.Book.Dto.Xml\Example.Library.Book.Dto.Xml.csproj" />
+    </ItemGroup>
+
+</Project>

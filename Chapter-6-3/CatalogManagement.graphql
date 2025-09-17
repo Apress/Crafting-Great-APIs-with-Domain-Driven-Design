@@ -1,0 +1,67 @@
+"A book as entry in the catalog."
+type Book {
+    "Identifier of the catalog entry"
+    identifier: ID!
+    "The 13-digit ISBN"
+    isbn13: String!
+    "Title"
+    title: String
+    "List of authors of the book - the list cannot be empty"
+    authors: [String!]!
+    "Number of text positions in the book"
+    numberOfTextPositions: Int
+    "Category"
+    category: Catagory
+    "Top twenty of individual tags give to the particular book"
+    tags: [String]
+    "Rating of the book between 1 and 5"
+    rating: Float
+    "Date of publishing"
+    publishingDate: String!
+    "Abstract written by a librarian"
+    abstract: String
+}
+
+enum Catagory {
+    NON_FICTION,
+    FICTION
+}
+
+"A book as entry in the catalog to be created."
+input BookInput {
+    "The 13-digit ISBN"
+    isbn13: String!
+    "Title"
+    title: String
+    "List of authors of the book - the list cannot be empty"
+    authors: [String!]!
+    "Number of text positions in the book"
+    numberOfTextPositions: Int
+    "Category"
+    category: Catagory
+    "Top twenty of individual tags give to the particular book"
+    tags: [String]
+    "Rating of the book between 1 and 5"
+    rating: Float
+    "Date of publishing"
+    publishingDate: String!
+    "Abstract written by a librarian"
+    abstract: String
+}
+
+type Query {
+    "Delivers all books fulfilling the searchCriteria"
+    catalogEntries(searchCriteria: String!): [Book!]
+    "Delivers a book based on its ID"
+    catalogEntry(identifier: ID!): Book!
+}
+
+type Mutation {
+    "Creates a new entry of a book in the catalog"
+    createNewEntry(book: BookInput!): Book!
+    "Updates a catalog entry"
+    updateCatalogEntry(identifier: ID!, book: BookInput!): Book!
+    "Creates and updates an abstract of a book - deleting means an empty abstract"
+    createUpdateAbstract(identifier: ID!, abstract: String): ID!
+}
+

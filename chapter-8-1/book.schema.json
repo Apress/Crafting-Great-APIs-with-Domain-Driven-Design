@@ -1,0 +1,43 @@
+{
+  "$id": "https://example.com/book",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Book",
+  "description": "A schema representing a simplified book",
+  "type": "object",
+  "properties": {
+    "isbn13": {
+      "type": "string",
+      "pattern": "^[0-9]{13}$",
+      "description": "The 13-digit ISBN"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["NON_FICTION", "FICTION"],
+      "description": "The main category of the book"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50
+      },
+      "uniqueItems": true,
+      "maxItems": 20,
+      "description": "List of tags associated with the book (top 20)"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5,
+      "multipleOf" : 0.1,
+      "description": "The average rating of the book (0 to 5 stars, with one decimal place)"
+    }
+  },
+  "required": [
+    "isbn13",
+    "category",
+    "tags"
+  ],
+  "additionalProperties": false
+}

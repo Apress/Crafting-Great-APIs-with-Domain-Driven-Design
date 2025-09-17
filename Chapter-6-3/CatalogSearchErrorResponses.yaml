@@ -1,0 +1,35 @@
+openapi: 3.1.0
+..
+
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ForbiddenResponse:
+      description: Forbidden
+    NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ServiceNotAvailableResponse:
+      description: Service not available
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    DefaultResponse:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+
+
+
+

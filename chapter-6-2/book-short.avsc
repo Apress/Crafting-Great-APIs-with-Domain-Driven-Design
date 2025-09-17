@@ -1,0 +1,80 @@
+{
+  "type": "record",
+  "name": "Book",
+  "namespace": "com.example",
+  "doc": "A schema representing a book and its metadata for the library for, e.g., search results",
+  "fields": [
+    {
+      "name": "isbn13",
+      "type": "string",
+      "doc": "The 13-digit ISBN, e.g., 9781234567890"
+    },
+    {...},
+    {
+      "name": "coverThumbnailWebP",
+      "type": ["null", "bytes"],
+      "default": null,
+      "doc": "Base64 encoded WebP image of the book cover thumbnail"
+    },
+    {
+      "name": "authors",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "Author",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "doc": "The full name of the author with titles, e.g.: \"Eric Evans\", \"Dr. John Smith\""
+            },
+            {...}
+          ]
+        }
+      },
+      "doc": "List of authors of the book"
+    },
+    {...},
+    {
+      "name": "category",
+      "type": {
+        "type": "enum",
+        "name": "Category",
+        "symbols": ["NON_FICTION", "FICTION"]
+      },
+      "doc": "The main category of the book"
+    },
+    {
+      "name": "tags",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "doc": "List of tags associated with the book (top 20)"
+    },
+    {
+      "name": "rating",
+      "type": ["null", "bytes"],
+      "default": null,
+      "logicalType": "decimal",
+      "precision": 2,
+      "scale": 1,
+      "doc": "The average rating of the book (0 to 5 stars, with one decimal place), e.g., 4.5"
+    },
+    {
+      "name": "hasValidLicense",
+      "type": "boolean",
+      "doc": "Indicates whether the library has a valid license for the book at the moment",
+      "default": true
+    },
+    {
+      "name": "publishingDate",
+      "type": {
+        "type": "string",
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+      },
+      "doc": "The date when the book was published in yyyy-mm-dd format ([Date](https://avro.apache.org/docs/1.8.0/spec.html#Date) was not used as it does not allow to store values before the unix epoch, 1 January 1970)"
+    }
+  ]
+}

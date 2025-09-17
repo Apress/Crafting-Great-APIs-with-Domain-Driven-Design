@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:noNamespaceSchemaLocation="book.xsd"
+   isbn13="9783161484100">
+   <title>The best book</title>
+   <coverThumbnailWebP>aW1hZ2UgaW4gYmFzZTY0</coverThumbnailWebP>
+   <authors>
+      <author>
+         <name>author 1</name>
+         <portraitThumbnailWebP>aW1hZ2UgaW4gYmFzZTY0</portraitThumbnailWebP>
+      </author>
+      <author>
+         <name>author 2</name>
+      </author>
+   </authors>
+   <numberOfTextPosition>4</numberOfTextPosition>
+   <category>NON_FICTION</category>
+   <tags>
+      <tag>DDD</tag>
+      <tag>Modeling</tag>
+   </tags>
+   <rating>4.5</rating>
+   <hasValidLicense>true</hasValidLicense>
+   <publishingDate>2020-08-01</publishingDate>
+</book>

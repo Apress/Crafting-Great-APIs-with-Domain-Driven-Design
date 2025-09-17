@@ -1,0 +1,14 @@
+services:
+  build-protobuf:
+    build:
+      dockerfile: ../../Dockerfile.csharp-protobuf
+    volumes:
+      - ..:/source
+    command: protoc --csharp_out=/source/LibrarySchemaTester/Example.Library.Book.Dto.Proto/ --proto_path=/source/ /source/book.proto --csharp_opt=base_namespace=Example.Library.Book.Dto.Proto
+  build-avro:
+    build:
+      dockerfile: ../../Dockerfile.csharp-avro
+    volumes:
+      - ..:/source
+    command: avrogen -s /source/book.avsc /source/LibrarySchemaTester/Example.Library.Book.Dto.Avro/ --namespace com.example:Example.Library.Book.Dto.Avro --skip-directories
+

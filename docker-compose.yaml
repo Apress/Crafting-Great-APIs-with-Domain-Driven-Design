@@ -1,0 +1,43 @@
+services:
+  validate-jsonschema:
+    image: python:3.12.5-bookworm
+    volumes:
+      - .:/source
+    working_dir: /source
+    command: |
+      sh -c "pip install check-jsonschema && check-jsonschema --schemafile chapter-6-2/book.schema.json chapter-6-2/book.json"
+  validate-avro-schema:
+    build:
+      dockerfile: Dockerfile.avro
+    volumes:
+      - .:/source
+    command: java -jar avro-cli-0.2.7.jar validate -s /source/chapter-6-2/book.avsc
+  validate-xml:
+    build:
+      dockerfile: Dockerfile.xml
+    volumes:
+      - .:/source
+    command: xmllint -schema /source/chapter-6-2/book.xsd /source/chapter-6-2/book.xml
+  validate-protobuf:
+    build:
+      dockerfile: Dockerfile.go-protobuf
+    volumes:
+      - .:/source
+    command: |
+      sh -c "protoc --go_out=/tmp/ --go_opt=paths=source_relative --proto_path=/source/chapter-6-2/ /source/chapter-6-2/book.proto --go_opt=Mbook.proto=example.library &&
+      protoc --go_out=/tmp/ --go_opt=paths=source_relative --proto_path=/source/Chapter-6-3/ /source/Chapter-6-3/book.proto --go_opt=Mbook.proto=example.library"
+
+  validate-openapi:
+    image: stoplight/spectral:6.14.3
+    volumes:
+      - .:/source
+    command: lint --ruleset "/source/.spectral.yaml" "/source/**/*.oas.yaml"
+
+  validate-asyncapi:
+    image: asyncapi/cli:2.16.3
+    volumes:
+      - .:/source
+    working_dir: "/source"
+    entrypoint: ""
+    command: /source/validate-asyncapis.sh
+

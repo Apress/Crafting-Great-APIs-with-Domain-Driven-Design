@@ -1,0 +1,29 @@
+query QueryBook {
+    catalogEntry(identifier: "7d29152d-b334-4152-838e-8094b71d9af9"),
+    {
+        identifier,
+        isbn13,
+        title,
+        authors,
+        numberOfTextPositions,
+        tags,
+        rating,
+        publishingDate
+    }
+}
+
+query QueryBookAbstract {
+    catalogEntry(identifier: "7d29152d-b334-4152-838e-8094b71d9af9"),
+    {
+        abstract
+    }
+}
+
+mutation CreateBookFromPeter {
+  createNewEntry(book: {isbn13: "978-0-323-77671-4", authors: "Peter", publishingDate: "1999-01-01"}) {
+    identifier
+    title
+    authors
+    publishingDate
+  }
+}

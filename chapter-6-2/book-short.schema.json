@@ -1,0 +1,73 @@
+{
+  "$id": "https://example.com/book",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Book",
+  "description": "A schema representing a book and its metadata for the library for, e.g., search results",
+  "type": "object",
+  "properties": {
+    "isbn13": {
+      "type": "string",
+      "pattern": "^[0-9]{13}$",
+      "description": "The 13-digit ISBN"
+    },
+    "title": {...},
+    "coverThumbnailWebP": {
+      "type": "string",
+      "contentEncoding": "base64",
+      "contentMediaType": "image/webp",
+      "description": "Base64 encoded WebP image of the book cover thumbnail"
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "examples": [ "Eric Evans", "Dr. John Smith"],
+            "description": "The full name of the author with titles"
+          },
+          "portraitThumbnailWebP": {...}
+        },
+        "required": ["name"]
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "List of authors of the book"
+    },
+    "numberOfTextPosition": {...},
+    "category": {
+      "type": "string",
+      "enum": ["NON_FICTION", "FICTION"],
+      "description": "The main category of the book"
+    },
+    "tags": {
+      "type": "array",
+      "items": {...},
+      "uniqueItems": true,
+      "maxItems": 20,
+      "description": "List of tags associated with the book (top 20)"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5,
+      "multipleOf" : 0.1,
+      "description": "The average rating of the book (0 to 5 stars, with one decimal place)"
+    },
+    "hasValidLicense": {
+      "type": "boolean",
+      "description": "Indicates whether the library has a valid license for the book at the moment"
+    },
+    "publishingDate": {
+      "type": "string",
+      "format": "date",
+      "description": "The date when the book was published",
+      "examples": ["2000-01-01"]
+    }
+  },
+  "required": [ "isbn13", "title", ... ],
+  "additionalProperties": false
+}

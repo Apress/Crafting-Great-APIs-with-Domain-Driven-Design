@@ -1,0 +1,32 @@
+channels:
+  BookPurchasedEventProtobufChannel:
+    description: Channel where messages are stored when a book was purchased in Protobuf
+    address: book-purchased-protobuf
+    messages:
+      BookPurchasedEventProtobuf:
+        $ref: '#/components/messages/BookPurchasedEventProtobuf'
+    bindings:
+      kafka:
+        topic: 'book-purchased-protobuf'
+        bindingVersion: '0.5.0'
+components:
+  messages:
+    BookPurchasedEventProtobuf:
+      headers:
+        $ref: '#/components/schemas/MessageHeader'
+      payload:
+        schemaFormat: application/vnd.google.protobuf;version=3
+        schema: |
+          syntax = "proto3";
+
+          package Example.Library;
+
+          // Book represents a book and its metadata for the library, e.g., for search results
+          message BookPurchasedEventProtobuf {
+            // The 13-digit ISBN
+            string isbn13 = 1;
+
+            ...
+          }
+          ...
+ 

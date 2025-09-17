@@ -1,0 +1,38 @@
+openapi: 3.1.0
+
+
+components:
+  parameters:
+    BookIdentifierParameter:
+      name: bookId
+      description: Book identifier
+      required: true
+      in: path
+      schema:
+        type: string
+        format: uuid
+        examples:
+          - 193ad3f6-0c0d-4e57-a4e4-b50766e64f14
+    SearchCriteriaParameter:
+      name: searchCriteria
+      in: query
+      required: true
+      schema:
+        type: string
+        minLength: 2
+        maxLength: 200
+        examples:
+          - Evans
+    ApiVersionParameter:
+      name: apiVersion
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+          - 1.0.1
+          - 1.1.1
+        default: 1.1.1
+        examples:
+          - 1.1.1
+
