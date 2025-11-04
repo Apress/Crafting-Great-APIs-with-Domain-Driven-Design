@@ -1,0 +1,17 @@
+extends:
+  - "spectral:oas"
+  - https://raw.githubusercontent.com/baloise-incubator/spectral-ruleset/refs/heads/main/zalando.yml
+
+overrides:
+    - files:
+        - '*'
+      rules:
+        must-use-problem-json-for-errors: "off"
+        must-use-problem-json-as-default-response: "off"
+        must-use-snake-case-for-property-names: "off"
+        should-use-x-extensible-enum: "off"
+        must-use-standard-formats-for-date-and-time-properties-example: "off" # Rule is checking for single "example", this is obsolete
+    - files:
+        - '**#/components/parameters/VersionParameter'
+      rules:
+        should-declare-enum-values-using-upper-snake-case-format: "off"
